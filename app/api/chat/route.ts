@@ -3,6 +3,7 @@ import OpenAI from 'openai'
 import { ChatCompletionMessageParam } from 'openai/resources/chat'
 import { getConfig } from '@/lib/configStore'
 import { prisma } from '@/lib/prisma'
+import { Message } from '@prisma/client'
 
 export async function POST(request: Request) {
   try {
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
         role: 'system',
         content: '你是一位精通佛法的智者，能以慈悲和智慧回答关于佛教的问题。请用简单易懂的方式解释深奥的佛法概念。'
       },
-      ...history.map(msg => ({
+      ...history.map((msg: Message) => ({
         role: msg.role as 'user' | 'assistant',
         content: msg.content
       })),
