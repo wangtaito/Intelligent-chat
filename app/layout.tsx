@@ -7,10 +7,10 @@ import ThemeToggle from '@/components/ThemeToggle'
 import { Providers } from './providers'
 import ApiKeySelector from '@/components/ApiKeySelector'
 
+// 配置 Inter 字体
 const inter = Inter({ 
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
 })
 
 export const metadata: Metadata = {
@@ -58,7 +58,7 @@ export default function RootLayout({
           <main className="flex flex-col flex-1 bg-white dark:bg-gray-900">
             {/* 顶部标题栏 */}
             <div className="h-[60px] border-b border-gray-200 dark:border-gray-700 flex items-center px-4">
-              <h1 className="text-xl font-medium text-gray-900 dark:text-white mr-4">佛學千問 1.0</h1>
+              <h1 className="mr-4 text-xl font-medium text-gray-900 dark:text-white">佛學千問 1.0</h1>
               <ApiKeySelector />
             </div>
             {/* 聊天内容区 */}
