@@ -63,37 +63,55 @@ export default function PromptSelector({
 }: {
   onSelect: (prompt: string) => void;
 }) {
-  const [selected, setSelected] = useState(prompts[0].id);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState(prompts[0]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const promptId = e.target.value;
-    setSelected(promptId);
-    const prompt = prompts.find((p) => p.id === promptId);
-    if (prompt) {
-      onSelect(prompt.content);
-    }
+  const handleSelect = (prompt: (typeof prompts)[0]) => {
+    setSelectedPrompt(prompt);
+    onSelect(prompt.content);
+    setShowModal(false);
   };
 
   return (
-    <div className="mb-4">
-      <label
-        htmlFor="prompt-select"
-        className="block text-sm font-medium text-gray-700"
+    <div className="flex relative justify-center">
+      <button
+        onClick={() => setShowModal(true)}
+        className="flex gap-2 items-center px-4 py-2 text-gray-700 bg-white rounded-lg border border-gray-200 dark:text-gray-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
       >
-        選擇對話角色：
-      </label>
-      <select
-        id="prompt-select"
-        value={selected}
-        onChange={handleChange}
-        className="block py-2 pr-10 pl-3 mt-1 w-full text-base rounded-md border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-      >
-        {prompts.map((prompt) => (
-          <option key={prompt.id} value={prompt.id}>
-            {prompt.title} - {prompt.description}
-          </option>
-        ))}
-      </select>
+        <span>對話角色：{selectedPrompt.title}</span>
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+
+      {showModal && (
+        <div className="overflow-hidden absolute right-0 left-0 mt-2 bg-white rounded-lg border border-gray-200 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+          {prompts.map((prompt) => (
+            <button
+              key={prompt.title}
+              onClick={() => handleSelect(prompt)}
+              className={`w-full px-4 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-700
+                ${
+                  prompt.title === selectedPrompt.title
+                    ? "bg-indigo-50 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-300"
+                    : "text-gray-700 dark:text-gray-200"
+                }`}
+            >
+              {prompt.title}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
